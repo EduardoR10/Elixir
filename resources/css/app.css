@@ -1,0 +1,63 @@
+/* Tailwind v4: carga framework + tema (déjalo como lo tienes) */
+@import "tailwindcss";
+
+@theme {
+  --color-elixir-black: #0b0b0b;
+  --color-elixir-gold:  #f5c542;
+  --color-elixir-goldSoft: #e4b73b;
+
+  --font-serif: "Lora", serif;
+  --font-sans:  "Roboto", ui-sans-serif, system-ui;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-sans); background-color: var(--color-elixir-black); color: white; }
+  ::selection { background: var(--color-elixir-gold); color: black; }
+}
+
+/* ===== AQUI LA CORRECCIÓN ===== */
+@layer components {
+  /* clase base opcional (no la uses con @apply en otras clases) */
+  .btn {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-md transition font-medium;
+  }
+
+  /* NO uses `@apply btn` aquí; repite las utilidades necesarias */
+  .btn-gold {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-md transition font-medium;
+    border: 1px solid var(--color-elixir-gold);
+    color: black;
+    background-color: var(--color-elixir-gold);
+  }
+  .btn-gold:hover { filter: brightness(0.95); }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-md transition font-medium text-white;
+    border: 1px solid rgba(255,255,255,.15);
+  }
+  .btn-ghost:hover { background-color: rgba(255,255,255,.08); }
+
+  .card {
+    @apply rounded-xl overflow-hidden;
+    border: 1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.05);
+  }
+
+  .card-hover { @apply transition; box-shadow: 0 0 0 1px rgba(245,197,66,.35), 0 10px 30px -10px rgba(245,197,66,.25); }
+}
+
+@layer utilities {
+  .title { @apply font-serif text-3xl md:text-4xl; }
+  .subtitle { @apply text-white/70; }
+  .section { @apply py-16 border-t border-white/10; }
+  .gold-divider { @apply w-16 h-[2px] rounded; background-color: var(--color-elixir-gold); }
+
+  .bg-radial-faint  { background-image: radial-gradient(1200px 600px at 50% -10%, rgba(245,197,66,0.10), transparent 60%); }
+  .bg-radial-strong { background-image: radial-gradient(800px 400px at 50% -10%, rgba(245,197,66,0.18), transparent 65%); }
+}
+
+/* aliases de color */
+.bg-elixir-black { background-color: var(--color-elixir-black); }
+.text-elixir-gold { color: var(--color-elixir-gold); }
+.border-elixir-gold { border-color: var(--color-elixir-gold); }
