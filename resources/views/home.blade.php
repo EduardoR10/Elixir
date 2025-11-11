@@ -2,123 +2,85 @@
 @section('title', $title ?? 'Inicio')
 
 @section('content')
-{{-- HERO --}}
-<header class="relative min-h-[72vh] flex items-center">
-  {{-- Fondo: imagen + brillo radial más fuerte (si se provee) --}}
-  @if(!empty($heroImage))
-    <img src="{{ asset($heroImage) }}" alt="" class="absolute inset-0 w-full h-full object-cover opacity-35 pointer-events-none">
-  @else
-    {{-- fallback: color/gradiente si no hay imagen --}}
-    <div class="absolute inset-0 bg-gradient-to-b from-black/75 to-transparent pointer-events-none"></div>
-  @endif
-  <div class="pointer-events-none absolute inset-0 bg-radial-strong"></div>
-
-  <div class="container relative z-10 px-4"> {{-- container con padding lateral para márgenes --}}
-    <div class="max-w-3xl">
-      <h1 class="font-serif text-4xl md:text-6xl leading-tight">{{ $headline ?? 'El arte de la coctelería, la esencia del placer' }}</h1>
-      <p class="mt-4 text-lg md:text-xl text-white/80">{{ $subheadline ?? 'Fusionamos sabores, creatividad y pasión para crear bebidas únicas y memorables.' }}</p>
-      <div class="mt-6 flex flex-wrap gap-3">
-        @if(!empty($ctaPrimaryUrl) && !empty($ctaPrimaryLabel))
-          <a href="{{ $ctaPrimaryUrl }}" class="btn-gold">{{ $ctaPrimaryLabel }}</a>
-        @else
-          <a href="#about" class="btn-gold">Conoce más</a>
-        @endif
-
-        @if(!empty($ctaSecondaryUrl) && !empty($ctaSecondaryLabel))
-          <a href="{{ $ctaSecondaryUrl }}" class="btn-ghost">{{ $ctaSecondaryLabel }}</a>
-        @else
-          <a href="{{ url('/agenda') }}" class="btn-ghost">Agenda tu evento</a>
-        @endif
+<section class="relative overflow-hidden">
+  <div class="absolute inset-0 bg-radial-strong"></div>
+  <div class="container-std relative z-10 flex flex-col gap-8 py-24 lg:flex-row lg:items-center">
+    <div class="lg:w-2/3">
+      <p class="uppercase tracking-[0.3em] text-sm text-elixir-gold opacity-80">{{ $tagline ?? 'coctelería de autor' }}</p>
+      <h1 class="mt-4 font-serif text-4xl leading-tight md:text-6xl">{{ $headline ?? 'Diseñamos experiencias líquidas memorables' }}</h1>
+      <p class="mt-6 max-w-2xl text-lg text-white/75">{{ $subheadline ?? 'Barras móviles, mixología de autor y maridajes pensados para cautivar a cada invitado. Creamos ambientes sofisticados con un sello dorado.' }}</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="{{ $ctaPrimaryUrl ?? url('/agenda') }}" class="btn-gold">{{ $ctaPrimaryLabel ?? 'Agenda una cita' }}</a>
+        <a href="{{ $ctaSecondaryUrl ?? url('/menu') }}" class="btn-ghost">{{ $ctaSecondaryLabel ?? 'Ver menú' }}</a>
+      </div>
+    </div>
+    <div class="lg:w-1/3">
+      <div class="rounded-2xl border border-white/10 bg-white/5 p-6 text-sm text-white/70 shadow-lg shadow-black/40 backdrop-blur">
+        <h2 class="text-lg font-semibold text-white">{{ $infoTitle ?? 'Próximo evento destacado' }}</h2>
+        <p class="mt-3">{{ $infoCopy ?? 'Reserva nuestra barra boutique para bodas, celebraciones privadas o eventos corporativos. Diseñamos cada detalle con lujo dorado.' }}</p>
       </div>
     </div>
   </div>
-</header>
+</section>
 
-{{-- VIDEO / INTRO --}}
 <section class="section">
-  <div class="container text-center px-4">
-    <h2 class="title">{{ $sectionDiscoverTitle ?? 'Descubre Elixir' }}</h2>
+  <div class="container-std">
+    <h2 class="title text-center">{{ $featuresTitle ?? 'Por qué elegir Elixir' }}</h2>
     <div class="gold-divider mx-auto mt-3"></div>
-    @if(!empty($introVideo))
-      <div class="mt-6 aspect-video rounded-xl overflow-hidden ring-1 ring-white/10 shadow-black/40 shadow-lg">
-        <video class="w-full h-full object-cover" src="{{ asset($introVideo) }}" autoplay muted loop playsinline></video>
-      </div>
-    @else
-      <p class="mt-6 text-white/80">{{ $introText ?? 'Sumérgete en el mundo de Elixir y descubre el arte de la coctelería.' }}</p>
-    @endif
-  </div>
-</section>
+    <p class="subtitle mx-auto mt-4 max-w-3xl text-center">{{ $featuresSubtitle ?? 'Un servicio premium que combina técnica, creatividad y hospitalidad de alto nivel.' }}</p>
 
-{{-- NOSOTROS --}}
-<section id="about" class="section">
-  <div class="container grid lg:grid-cols-3 gap-10 items-center px-4">
-    <div class="lg:col-span-2">
-      <h2 class="title">{{ $aboutTitle ?? 'Nosotros' }}</h2>
-      <div class="gold-divider mt-3"></div>
-      <p class="mt-5 text-white/80">{{ $aboutLead ?? 'Ofrecemos servicios de barra de cocteles para eventos especiales. Experiencias únicas y personalizadas para cada ocasión.' }}</p>
-      <div class="mt-6">
-        <a href="{{ $aboutCtaUrl ?? url('/agenda') }}" class="btn-gold">{{ $aboutCtaLabel ?? 'Diseñar mi plan' }}</a>
-      </div>
-    </div>
-    <div>
-      @if(!empty($aboutImage))
-        <img src="{{ asset($aboutImage) }}" class="w-full rounded-xl ring-1 ring-white/10 shadow-lg shadow-black/40" alt="{{ $aboutTitle ?? 'Nosotros' }}">
-      @endif
-    </div>
-  </div>
-</section>
-
-{{-- SERVICIOS --}}
-<section id="services" class="section">
-  <div class="container px-4">
-    <h2 class="title text-center">{{ $servicesTitle ?? '¿Qué ofrecemos?' }}</h2>
-    <p class="subtitle text-center mt-2">{{ $servicesSubtitle ?? 'Opciones para hacer de tu evento una experiencia inolvidable' }}</p>
-
-    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      @forelse($servicios ?? [] as $s)
-        <article class="card card-hover">
-          @if(!empty($s['img']))
-            <img src="{{ asset($s['img']) }}" alt="{{ $s['title'] ?? 'Servicio' }}" class="h-44 w-full object-cover">
-          @endif
-          <div class="p-4">
-            <h3 class="text-lg font-medium">{{ $s['title'] ?? 'Servicio' }}</h3>
-            <p class="mt-2 text-sm text-white/70">{{ $s['desc'] ?? '' }}</p>
+    <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      @foreach(($features ?? [
+        ['title' => 'Diseño sensorial', 'desc' => 'Cocteles elaborados con ingredientes seleccionados y presentación impecable.'],
+        ['title' => 'Equipo experto', 'desc' => 'Mixólogos profesionales listos para asesorar y sorprender a tus invitados.'],
+        ['title' => 'Experiencia mobile', 'desc' => 'Montajes elegantes que se adaptan a cualquier espacio interior o exterior.'],
+      ]) as $feature)
+        <article class="card card-hover h-full">
+          <div class="flex h-full flex-col gap-3 p-6">
+            <span class="text-elixir-gold">★</span>
+            <h3 class="text-lg font-semibold text-white">{{ $feature['title'] ?? '' }}</h3>
+            <p class="text-sm text-white/70">{{ $feature['desc'] ?? '' }}</p>
           </div>
         </article>
-      @empty
-        {{-- Fallback amigable cuando no hay servicios configurados --}}
-        <div class="col-span-full text-center text-white/70">{{ $servicesEmptyText ?? 'Próximamente: nuestros servicios estarán disponibles aquí.' }}</div>
-      @endforelse
+      @endforeach
     </div>
   </div>
 </section>
 
-{{-- CTA MENÚ --}}
-<section id="menu" class="section">
-  <div class="container text-center px-4">
-    <h2 class="title">{{ $menuTitle ?? 'Bebidas' }}</h2>
-    <p class="subtitle mt-2">{{ $menuSubtitle ?? 'Clásicos y creaciones propias' }}</p>
-    <a class="btn-ghost mt-6" href="{{ $menuUrl ?? url('/menu') }}">{{ $menuLabel ?? 'Ir al menú completo' }}</a>
-  </div>
-</section>
-
-{{-- CONTACTO --}}
-<section id="contact" class="section">
-  <div class="container grid lg:grid-cols-2 gap-10 px-4">
-    <div>
-      <h2 class="title">{{ $contactTitle ?? 'Contacto' }}</h2>
+<section class="section">
+  <div class="container-std flex flex-col gap-10 lg:flex-row lg:items-center">
+    <div class="lg:w-1/2">
+      <h2 class="title">{{ $aboutTitle ?? 'Un sorbo de lujo contemporáneo' }}</h2>
       <div class="gold-divider mt-3"></div>
-      <ul class="mt-5 space-y-2 text-white/85">
-        <li>{{ $contactAddress ?? 'Calle Mina #3 Uriangato, Gto. México' }}</li>
-        <li>{{ $contactPhone ?? '445 144 5285' }}</li>
-        <li>{{ $contactEmail ?? 'elixircontacto@gmail.com' }}</li>
-      </ul>
+      <p class="mt-5 text-white/80">{{ $aboutCopy ?? 'Nuestra barra móvil transforma cualquier ocasión en un ritual sofisticado. Seleccionamos destilados premium, diseñamos menús personalizados y ofrecemos un servicio impecable.' }}</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="{{ $aboutCtaUrl ?? url('/agenda') }}" class="btn-gold">{{ $aboutCtaLabel ?? 'Diseñar experiencia' }}</a>
+        <a href="{{ $aboutSecondaryUrl ?? '#contact' }}" class="btn-ghost">{{ $aboutSecondaryLabel ?? 'Solicitar cotización' }}</a>
+      </div>
     </div>
-    <div class="rounded-xl overflow-hidden ring-1 ring-white/10 aspect-[4/3] shadow-lg shadow-black/40">
-      @if(!empty($contactMapEmbed))
-        <iframe class="w-full h-full" src="{{ $contactMapEmbed }}" style="border:0" allowfullscreen loading="lazy"></iframe>
-      @endif
+    <div class="lg:w-1/2">
+      <div class="aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 via-transparent to-black/40 shadow-lg shadow-black/40">
+        @if(!empty($aboutImage))
+          <img src="{{ asset($aboutImage) }}" alt="{{ $aboutTitle ?? 'Elixir' }}" class="h-full w-full object-cover opacity-80 mix-blend-luminosity">
+        @endif
+      </div>
     </div>
+  </div>
+</section>
+
+<section id="contact" class="section">
+  <div class="container-std text-center">
+    <h2 class="title">{{ $contactTitle ?? 'Conversemos sobre tu evento' }}</h2>
+    <div class="gold-divider mx-auto mt-3"></div>
+    <p class="subtitle mx-auto mt-4 max-w-2xl">{{ $contactCopy ?? 'Cuéntanos la fecha, el estilo y la cantidad de invitados. Nuestro equipo se encargará del resto.' }}</p>
+
+    <div class="mt-10 flex flex-wrap justify-center gap-4 text-white/80">
+      <span>{{ $contactPhone ?? '445 144 5285' }}</span>
+      <span class="hidden text-white/30 md:inline">•</span>
+      <span>{{ $contactEmail ?? 'elixircontacto@gmail.com' }}</span>
+    </div>
+
+    <a href="{{ $contactCtaUrl ?? url('/agenda') }}" class="btn-gold mt-8 inline-flex">{{ $contactCtaLabel ?? 'Reservar ahora' }}</a>
   </div>
 </section>
 @endsection
