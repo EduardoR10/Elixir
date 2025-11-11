@@ -12,17 +12,17 @@
   @vite(['resources/css/app.css','resources/js/app.js'])
   @stack('head')
 </head>
-<body class="bg-elixir-black text-white relative">
+<body class="bg-elixir-black text-white min-h-screen flex flex-col">
   {{-- Sutil brillo dorado superior --}}
   <div class="pointer-events-none fixed inset-0 bg-radial-faint"></div>
 
   @include('partials.navbar')
 
-  <main class="pt-20">
+  <main class="flex-1 pt-20">
     @yield('content')
   </main>
 
-  <footer class="border-t border-white/10 mt-16">
+  <footer class="border-t border-white/10">
     <div class="container-std py-10 text-center text-white/70">
       <div class="gold-divider mx-auto mb-4"></div>
       © {{ date('Y') }} Elixir. Todos los derechos reservados
